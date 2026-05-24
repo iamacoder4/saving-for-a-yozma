@@ -498,12 +498,13 @@
         Phone: (515) 278-8200
       </p>
 
-      <form>
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea placeholder="Tell us about your project..."></textarea>
-        <button type="submit" class="btn btn-primary">Send Message</button>
-      </form>
+      <div style="margin-top: 30px; padding: 24px; border-radius: 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+        <p style="font-size: 1.1rem; color: rgba(255,255,255,0.8); line-height: 1.9;">
+          Contact us at:<br><br>
+          <strong style="font-size: 1.3rem; color: #7cc5ff;">(515) 278-8200</strong><br>
+          competitiveedgeinc@email.com
+        </p>
+      </div>
     </div>
   </section>
 
@@ -528,19 +529,7 @@
     window.addEventListener('scroll', revealSections);
     revealSections();
 
-    const form = document.querySelector('form');
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const button = form.querySelector('button');
-      button.innerText = 'Message Sent ✓';
-
-      setTimeout(() => {
-        button.innerText = 'Send Message';
-        form.reset();
-      }, 3000);
-    });
+    
   </script>
 
 </body>
