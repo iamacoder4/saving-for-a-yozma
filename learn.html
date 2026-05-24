@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Learn More</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:#070b14;
+      color:white;
+      overflow-x:hidden;
+      position:relative;
+    }
+
+    body::before{
+      content:'';
+      position:fixed;
+      width:700px;
+      height:700px;
+      background:radial-gradient(circle,#00a2ff55,transparent 70%);
+      top:-250px;
+      left:-200px;
+      z-index:-1;
+      animation:float 8s ease-in-out infinite;
+    }
+
+    body::after{
+      content:'';
+      position:fixed;
+      width:600px;
+      height:600px;
+      background:radial-gradient(circle,#7c4dff55,transparent 70%);
+      bottom:-250px;
+      right:-200px;
+      z-index:-1;
+      animation:float 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes float{
+      0%{transform:translateY(0px);}
+      50%{transform:translateY(30px);}
+      100%{transform:translateY(0px);}
+    }
+
+    .container{
+      width:90%;
+      max-width:1100px;
+      margin:auto;
+      padding:80px 0;
+    }
+
+    .hero{
+      text-align:center;
+      margin-bottom:80px;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:10px 18px;
+      border-radius:999px;
+      background:rgba(0,162,255,0.12);
+      border:1px solid rgba(0,162,255,0.3);
+      color:#7fd1ff;
+      margin-bottom:25px;
+      font-size:0.95rem;
+    }
+
+    h1{
+      font-size:4rem;
+      margin-bottom:20px;
+      font-weight:800;
+      letter-spacing:-2px;
+    }
+
+    .hero p{
+      color:rgba(255,255,255,0.72);
+      line-height:1.9;
+      max-width:750px;
+      margin:auto;
+      font-size:1.1rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:28px;
+      margin-top:50px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:28px;
+      padding:35px;
+      backdrop-filter:blur(18px);
+      transition:0.3s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+      border-color:rgba(0,162,255,0.35);
+      box-shadow:0 20px 40px rgba(0,0,0,0.35);
+    }
+
+    .icon{
+      width:65px;
+      height:65px;
+      border-radius:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.7rem;
+      margin-bottom:20px;
+      background:linear-gradient(135deg,#00a2ff33,#7c4dff33);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .card h2{
+      margin-bottom:14px;
+      font-size:1.5rem;
+    }
+
+    .card p{
+      color:rgba(255,255,255,0.7);
+      line-height:1.8;
+    }
+
+    .goal-box{
+      margin-top:90px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:32px;
+      padding:50px;
+      text-align:center;
+      backdrop-filter:blur(18px);
+    }
+
+    .goal-box h2{
+      font-size:3rem;
+      margin-bottom:20px;
+    }
+
+    .goal-box p{
+      color:rgba(255,255,255,0.72);
+      line-height:1.9;
+      max-width:700px;
+      margin:auto;
+      margin-bottom:35px;
+    }
+
+    .amount{
+      font-size:4rem;
+      font-weight:800;
+      background:linear-gradient(90deg,#00b7ff,#7c4dff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      margin-bottom:35px;
+    }
+
+    .buttons{
+      display:flex;
+      justify-content:center;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:15px 28px;
+      border-radius:16px;
+      text-decoration:none;
+      color:white;
+      font-weight:700;
+      transition:0.3s ease;
+    }
+
+    .primary{
+      background:linear-gradient(90deg,#00a2ff,#6d28ff);
+      box-shadow:0 10px 30px rgba(0,162,255,0.35);
+    }
+
+    .secondary{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .btn:hover{
+      transform:translateY(-4px);
+    }
+
+    footer{
+      text-align:center;
+      padding:50px 20px;
+      color:rgba(255,255,255,0.45);
+    }
+
+    @media(max-width:700px){
+
+      h1{
+        font-size:2.7rem;
+      }
+
+      .goal-box{
+        padding:35px 25px;
+      }
+
+      .goal-box h2{
+        font-size:2.2rem;
+      }
+
+      .amount{
+        font-size:3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <section class="hero">
+      <div class="badge">
+        Learn More About My Goal
+      </div>
+
+      <h1>Saving For A Yozma</h1>
+
+      <p>
+        This page shares more about what I’m working toward and why it matters to me.
+        Every bit of support helps move me closer to reaching my goal.
+      </p>
+    </section>
+
+    <section class="grid">
+
+      <div class="card">
+        <div class="icon">🎯</div>
+
+        <h2>The Goal</h2>
+
+        <p>
+          I’m currently saving up for a Yozma and tracking my progress publicly
+          to stay motivated and consistent.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="icon">📈</div>
+
+        <h2>Progress</h2>
+
+        <p>
+          Every contribution and every dollar saved pushes the goal forward.
+          Small progress still matters.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="icon">💙</div>
+
+        <h2>Support</h2>
+
+        <p>
+          Whether you donate, share the page, or simply check in,
+          the support genuinely helps.
+        </p>
+      </div>
+
+    </section>
+
+    <section class="goal-box">
+
+      <h2>Current Goal</h2>
+
+      <div class="amount">
+        $1,139.05
+      </div>
+
+      <p>
+        Current progress: $28 raised • 2.46% complete
+      </p>
+
+      <div class="buttons">
+        <a href="paypal.html" class="btn primary">
+          Support Goal
+        </a>
+
+        <a href="index.html" class="btn secondary">
+          Back Home
+        </a>
+      </div>
+
+    </section>
+
+  </div>
+
+  <footer>
+    Thank you for supporting the journey.
+  </footer>
+
+</body>
+</html>
