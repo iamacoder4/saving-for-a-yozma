@@ -242,15 +242,14 @@
     </div>
   </div>
 
-<!-- WORLD CHAT -->
-<!-- WORLDWIDE CHAT -->
+<!-- UPDATED WORLD CHAT -->
 <style>
 #chatToggle{
   position:fixed;
   bottom:25px;
   right:25px;
-  width:65px;
-  height:65px;
+  width:68px;
+  height:68px;
   border:none;
   border-radius:50%;
   background:linear-gradient(135deg,#00a2ff,#6d28ff);
@@ -258,7 +257,7 @@
   font-size:28px;
   cursor:pointer;
   z-index:9999;
-  box-shadow:0 10px 35px rgba(0,0,0,0.4);
+  box-shadow:0 10px 35px rgba(0,0,0,0.45);
   transition:.3s;
 }
 
@@ -268,29 +267,29 @@
 
 #worldChat{
   position:fixed;
-  bottom:100px;
+  bottom:105px;
   right:25px;
-  width:360px;
-  height:520px;
-  background:rgba(15,15,20,0.75);
-  backdrop-filter:blur(20px);
+  width:370px;
+  height:560px;
+  background:rgba(10,10,18,0.8);
+  backdrop-filter:blur(22px);
   border:1px solid rgba(255,255,255,0.08);
   border-radius:28px;
   overflow:hidden;
   display:none;
   flex-direction:column;
   z-index:9999;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  box-shadow:0 25px 70px rgba(0,0,0,0.5);
 }
 
 .chat-top{
   padding:18px;
-  background:rgba(255,255,255,0.04);
   border-bottom:1px solid rgba(255,255,255,0.06);
-  font-weight:700;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  background:rgba(255,255,255,0.03);
+  font-weight:700;
 }
 
 .chat-top span{
@@ -303,17 +302,31 @@
   padding:15px;
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:14px;
 }
 
 .msg{
-  background:rgba(255,255,255,0.06);
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  background:rgba(255,255,255,0.05);
   padding:12px;
-  border-radius:16px;
-  word-wrap:break-word;
+  border-radius:18px;
 }
 
-.msg strong{
+.msg img{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid rgba(255,255,255,0.1);
+}
+
+.msg-content{
+  flex:1;
+}
+
+.msg-content strong{
   color:#7fd1ff;
   display:block;
   margin-bottom:5px;
@@ -328,9 +341,9 @@
 
 .chat-input input{
   flex:1;
-  background:rgba(255,255,255,0.06);
   border:none;
   outline:none;
+  background:rgba(255,255,255,0.06);
   padding:14px;
   border-radius:14px;
   color:white;
@@ -346,7 +359,7 @@
   font-weight:700;
 }
 
-#usernameModal{
+#setupModal{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.7);
@@ -356,31 +369,31 @@
   z-index:10000;
 }
 
-.username-box{
+.setup-box{
   width:90%;
-  max-width:400px;
-  background:#111827;
+  max-width:420px;
+  background:#10131d;
   padding:35px;
-  border-radius:24px;
+  border-radius:28px;
   text-align:center;
 }
 
-.username-box h2{
-  margin-bottom:18px;
+.setup-box h2{
+  margin-bottom:20px;
 }
 
-.username-box input{
+.setup-box input{
   width:100%;
+  margin-bottom:15px;
   padding:14px;
   border:none;
   outline:none;
   border-radius:14px;
-  margin-bottom:15px;
-  background:rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.06);
   color:white;
 }
 
-.username-box button{
+.setup-box button{
   width:100%;
   padding:14px;
   border:none;
@@ -391,11 +404,19 @@
   cursor:pointer;
 }
 
+.preview{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:18px;
+  border:3px solid rgba(255,255,255,0.1);
+}
+
 @media(max-width:500px){
   #worldChat{
     width:95%;
     right:2.5%;
-    bottom:90px;
   }
 }
 </style>
@@ -411,16 +432,22 @@
   <div id="messages"></div>
 
   <div class="chat-input">
-    <input type="text" id="messageInput" placeholder="Type message..." maxlength="200">
+    <input type="text" id="messageInput" maxlength="180" placeholder="Type message...">
     <button id="sendBtn">Send</button>
   </div>
 </div>
 
-<div id="usernameModal">
-  <div class="username-box">
-    <h2>Choose Username</h2>
+<div id="setupModal">
+  <div class="setup-box">
+    <h2>Create Profile</h2>
+
+    <img id="preview" class="preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
     <input type="text" id="usernameInput" maxlength="16" placeholder="Username">
-    <button id="saveUsername">Join Chat</button>
+
+    <input type="file" id="pfpInput" accept="image/*">
+
+    <button id="saveProfile">Join Chat</button>
   </div>
 </div>
 
@@ -450,19 +477,49 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+const badWords = [
+  "fuck","shit","bitch","asshole","nigga","nigger",
+  "fag","dick","pussy","slut","whore","cunt"
+];
+
 const chatToggle = document.getElementById("chatToggle");
 const worldChat = document.getElementById("worldChat");
 const sendBtn = document.getElementById("sendBtn");
 const messageInput = document.getElementById("messageInput");
 const messages = document.getElementById("messages");
 
-let username = localStorage.getItem("chatUsername");
+const setupModal = document.getElementById("setupModal");
 
-if(username){
-  document.getElementById("usernameModal").style.display = "none";
+let username = localStorage.getItem("chatUsername");
+let profilePic = localStorage.getItem("chatPfp");
+
+if(username && profilePic){
+  setupModal.style.display = "none";
 }
 
-document.getElementById("saveUsername").onclick = () => {
+chatToggle.onclick = () => {
+  worldChat.style.display =
+    worldChat.style.display === "flex"
+      ? "none"
+      : "flex";
+};
+
+document.getElementById("pfpInput").addEventListener("change", e => {
+  const file = e.target.files[0];
+
+  if(!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    document.getElementById("preview").src = reader.result;
+    profilePic = reader.result;
+  };
+
+  reader.readAsDataURL(file);
+});
+
+document.getElementById("saveProfile").onclick = () => {
   const val = document.getElementById("usernameInput").value.trim();
 
   if(val.length < 2){
@@ -470,18 +527,17 @@ document.getElementById("saveUsername").onclick = () => {
     return;
   }
 
+  if(!profilePic){
+    alert("Upload a profile picture");
+    return;
+  }
+
   username = val;
 
-  localStorage.setItem("chatUsername", val);
+  localStorage.setItem("chatUsername", username);
+  localStorage.setItem("chatPfp", profilePic);
 
-  document.getElementById("usernameModal").style.display = "none";
-};
-
-chatToggle.onclick = () => {
-  worldChat.style.display =
-    worldChat.style.display === "flex"
-      ? "none"
-      : "flex";
+  setupModal.style.display = "none";
 };
 
 sendBtn.onclick = sendMessage;
@@ -492,14 +548,26 @@ messageInput.addEventListener("keypress", e => {
   }
 });
 
+function containsBadWords(text){
+  const lower = text.toLowerCase();
+
+  return badWords.some(word => lower.includes(word));
+}
+
 function sendMessage(){
   const text = messageInput.value.trim();
 
   if(!text || !username) return;
 
+  if(containsBadWords(text)){
+    alert("No cussing allowed");
+    return;
+  }
+
   push(ref(db, "messages"), {
     username: username,
     text: text,
+    pfp: profilePic,
     time: Date.now()
   });
 
@@ -508,7 +576,7 @@ function sendMessage(){
 
 const messagesQuery = query(
   ref(db, "messages"),
-  limitToLast(50)
+  limitToLast(100)
 );
 
 onChildAdded(messagesQuery, snapshot => {
@@ -518,8 +586,11 @@ onChildAdded(messagesQuery, snapshot => {
   div.className = "msg";
 
   div.innerHTML = `
-    <strong>${escapeHTML(msg.username)}</strong>
-    ${escapeHTML(msg.text)}
+    <img src="${msg.pfp}" alt="">
+    <div class="msg-content">
+      <strong>${escapeHTML(msg.username)}</strong>
+      ${escapeHTML(msg.text)}
+    </div>
   `;
 
   messages.appendChild(div);
