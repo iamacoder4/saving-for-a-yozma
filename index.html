@@ -242,19 +242,20 @@
     </div>
   </div>
 
-<!-- UPDATED WORLD CHAT -->
+
+  <!-- WORLD CHAT -->
 <style>
 #chatToggle{
   position:fixed;
   bottom:25px;
   right:25px;
-  width:68px;
-  height:68px;
+  width:70px;
+  height:70px;
   border:none;
   border-radius:50%;
   background:linear-gradient(135deg,#00a2ff,#6d28ff);
   color:white;
-  font-size:28px;
+  font-size:30px;
   cursor:pointer;
   z-index:9999;
   box-shadow:0 10px 35px rgba(0,0,0,0.45);
@@ -269,12 +270,12 @@
   position:fixed;
   bottom:105px;
   right:25px;
-  width:370px;
-  height:560px;
-  background:rgba(10,10,18,0.8);
+  width:380px;
+  height:580px;
+  background:rgba(10,10,18,0.82);
   backdrop-filter:blur(22px);
   border:1px solid rgba(255,255,255,0.08);
-  border-radius:28px;
+  border-radius:30px;
   overflow:hidden;
   display:none;
   flex-direction:column;
@@ -305,31 +306,54 @@
   gap:14px;
 }
 
-.msg{
+.msg-row{
   display:flex;
-  gap:12px;
-  align-items:flex-start;
-  background:rgba(255,255,255,0.05);
+}
+
+.my-row{
+  justify-content:flex-end;
+}
+
+.other-row{
+  justify-content:flex-start;
+}
+
+.msg{
+  max-width:78%;
   padding:12px;
-  border-radius:18px;
+  border-radius:22px;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  animation:fade .25s ease;
+}
+
+.my-msg{
+  background:linear-gradient(135deg,#00a2ff,#6d28ff);
+  border-bottom-right-radius:8px;
+}
+
+.other-msg{
+  background:rgba(255,255,255,0.06);
+  border-bottom-left-radius:8px;
 }
 
 .msg img{
-  width:42px;
-  height:42px;
+  width:40px;
+  height:40px;
   border-radius:50%;
   object-fit:cover;
-  border:2px solid rgba(255,255,255,0.1);
+  flex-shrink:0;
 }
 
 .msg-content{
-  flex:1;
+  word-break:break-word;
 }
 
 .msg-content strong{
-  color:#7fd1ff;
   display:block;
-  margin-bottom:5px;
+  margin-bottom:4px;
+  font-size:.95rem;
 }
 
 .chat-input{
@@ -362,7 +386,7 @@
 #setupModal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.7);
+  background:rgba(0,0,0,0.72);
   display:flex;
   justify-content:center;
   align-items:center;
@@ -372,9 +396,9 @@
 .setup-box{
   width:90%;
   max-width:420px;
-  background:#10131d;
+  background:#111827;
   padding:35px;
-  border-radius:28px;
+  border-radius:30px;
   text-align:center;
 }
 
@@ -413,6 +437,17 @@
   border:3px solid rgba(255,255,255,0.1);
 }
 
+@keyframes fade{
+  from{
+    opacity:0;
+    transform:translateY(8px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
 @media(max-width:500px){
   #worldChat{
     width:95%;
@@ -424,6 +459,7 @@
 <button id="chatToggle">💬</button>
 
 <div id="worldChat">
+
   <div class="chat-top">
     <div>🌎 Worldwide Chat</div>
     <span>LIVE</span>
@@ -432,27 +468,55 @@
   <div id="messages"></div>
 
   <div class="chat-input">
-    <input type="text" id="messageInput" maxlength="180" placeholder="Type message...">
+    <input
+      type="text"
+      id="messageInput"
+      maxlength="180"
+      placeholder="Type message..."
+    >
+
     <button id="sendBtn">Send</button>
   </div>
+
 </div>
 
 <div id="setupModal">
+
   <div class="setup-box">
+
     <h2>Create Profile</h2>
 
-    <img id="preview" class="preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+    <img
+      id="preview"
+      class="preview"
+      src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+    >
 
-    <input type="text" id="usernameInput" maxlength="16" placeholder="Username">
+    <input
+      type="text"
+      id="usernameInput"
+      maxlength="16"
+      placeholder="Username"
+    >
 
-    <input type="file" id="pfpInput" accept="image/*">
+    <input
+      type="file"
+      id="pfpInput"
+      accept="image/*"
+    >
 
-    <button id="saveProfile">Join Chat</button>
+    <button id="saveProfile">
+      Join Chat
+    </button>
+
   </div>
+
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
   getDatabase,
@@ -460,8 +524,10 @@ import {
   push,
   onChildAdded,
   query,
-  limitToLast
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  limitToLast,
+  remove
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAuoYSA7Di1Dpz9-Ke2xcmhw7w8Hr5lny8",
@@ -478,8 +544,18 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const badWords = [
-  "fuck","shit","bitch","asshole","nigga","nigger",
-  "fag","dick","pussy","slut","whore","cunt"
+  "fuck",
+  "shit",
+  "bitch",
+  "asshole",
+  "nigga",
+  "nigger",
+  "fag",
+  "dick",
+  "pussy",
+  "slut",
+  "whore",
+  "cunt"
 ];
 
 const chatToggle = document.getElementById("chatToggle");
@@ -498,13 +574,18 @@ if(username && profilePic){
 }
 
 chatToggle.onclick = () => {
+
   worldChat.style.display =
     worldChat.style.display === "flex"
       ? "none"
       : "flex";
+
 };
 
-document.getElementById("pfpInput").addEventListener("change", e => {
+document
+.getElementById("pfpInput")
+.addEventListener("change", e => {
+
   const file = e.target.files[0];
 
   if(!file) return;
@@ -512,15 +593,26 @@ document.getElementById("pfpInput").addEventListener("change", e => {
   const reader = new FileReader();
 
   reader.onload = () => {
-    document.getElementById("preview").src = reader.result;
+
+    document.getElementById("preview").src =
+      reader.result;
+
     profilePic = reader.result;
+
   };
 
   reader.readAsDataURL(file);
+
 });
 
-document.getElementById("saveProfile").onclick = () => {
-  const val = document.getElementById("usernameInput").value.trim();
+document
+.getElementById("saveProfile")
+.onclick = () => {
+
+  const val =
+    document.getElementById("usernameInput")
+    .value
+    .trim();
 
   if(val.length < 2){
     alert("Username too short");
@@ -534,28 +626,44 @@ document.getElementById("saveProfile").onclick = () => {
 
   username = val;
 
-  localStorage.setItem("chatUsername", username);
-  localStorage.setItem("chatPfp", profilePic);
+  localStorage.setItem(
+    "chatUsername",
+    username
+  );
+
+  localStorage.setItem(
+    "chatPfp",
+    profilePic
+  );
 
   setupModal.style.display = "none";
+
 };
 
 sendBtn.onclick = sendMessage;
 
 messageInput.addEventListener("keypress", e => {
+
   if(e.key === "Enter"){
     sendMessage();
   }
+
 });
 
 function containsBadWords(text){
+
   const lower = text.toLowerCase();
 
-  return badWords.some(word => lower.includes(word));
+  return badWords.some(word =>
+    lower.includes(word)
+  );
+
 }
 
 function sendMessage(){
-  const text = messageInput.value.trim();
+
+  const text =
+    messageInput.value.trim();
 
   if(!text || !username) return;
 
@@ -565,13 +673,16 @@ function sendMessage(){
   }
 
   push(ref(db, "messages"), {
+
     username: username,
     text: text,
     pfp: profilePic,
     time: Date.now()
+
   });
 
   messageInput.value = "";
+
 }
 
 const messagesQuery = query(
@@ -580,33 +691,88 @@ const messagesQuery = query(
 );
 
 onChildAdded(messagesQuery, snapshot => {
+
   const msg = snapshot.val();
 
-  const div = document.createElement("div");
-  div.className = "msg";
+  const isMe =
+    msg.username === username;
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    isMe
+      ? "msg-row my-row"
+      : "msg-row other-row";
+
+  const div =
+    document.createElement("div");
+
+  div.className =
+    isMe
+      ? "msg my-msg"
+      : "msg other-msg";
 
   div.innerHTML = `
-    <img src="${msg.pfp}" alt="">
+
+    <img src="${msg.pfp}">
+
     <div class="msg-content">
-      <strong>${escapeHTML(msg.username)}</strong>
+
+      <strong>
+        ${escapeHTML(msg.username)}
+      </strong>
+
       ${escapeHTML(msg.text)}
+
     </div>
+
   `;
 
-  messages.appendChild(div);
+  row.appendChild(div);
 
-  messages.scrollTop = messages.scrollHeight;
+  messages.appendChild(row);
+
+  messages.scrollTop =
+    messages.scrollHeight;
+
+});
+
+document.addEventListener("keydown", e => {
+
+  if(e.ctrlKey &&
+     e.key.toLowerCase() === "m"){
+
+    const pass =
+      prompt("Admin Password");
+
+    if(pass !== "kenzo123") return;
+
+    remove(ref(db, "messages"));
+
+    messages.innerHTML = "";
+
+    alert("All messages deleted");
+
+  }
+
 });
 
 function escapeHTML(str){
-  return str.replace(/[&<>"']/g, tag => ({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  }[tag]));
+
+  return str.replace(
+    /[&<>"']/g,
+    tag => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[tag])
+  );
+
 }
+
 </script>
   
 </body>
