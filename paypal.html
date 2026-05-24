@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Support My Goal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#070b14;
+      overflow:hidden;
+      position:relative;
+      color:white;
+    }
+
+    body::before{
+      content:'';
+      position:absolute;
+      width:700px;
+      height:700px;
+      background:radial-gradient(circle,#009cff55,transparent 70%);
+      top:-250px;
+      left:-200px;
+      animation:float 8s ease-in-out infinite;
+    }
+
+    body::after{
+      content:'';
+      position:absolute;
+      width:650px;
+      height:650px;
+      background:radial-gradient(circle,#7c4dff55,transparent 70%);
+      bottom:-250px;
+      right:-200px;
+      animation:float 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes float{
+      0%{transform:translateY(0px);}
+      50%{transform:translateY(25px);}
+      100%{transform:translateY(0px);}
+    }
+
+    .card{
+      width:90%;
+      max-width:650px;
+      padding:60px;
+      border-radius:32px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.1);
+      backdrop-filter:blur(18px);
+      position:relative;
+      z-index:2;
+      text-align:center;
+      box-shadow:0 30px 80px rgba(0,0,0,0.45);
+    }
+
+    .paypal-logo{
+      font-size:3rem;
+      font-weight:800;
+      margin-bottom:20px;
+      background:linear-gradient(90deg,#00b7ff,#7c4dff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    h1{
+      font-size:3rem;
+      margin-bottom:20px;
+    }
+
+    p{
+      color:rgba(255,255,255,0.72);
+      line-height:1.8;
+      font-size:1.05rem;
+      margin-bottom:35px;
+    }
+
+    .goal{
+      margin:30px 0;
+      padding:25px;
+      border-radius:22px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .goal h2{
+      font-size:3.2rem;
+      margin-bottom:10px;
+      background:linear-gradient(90deg,#00b7ff,#7c4dff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .paypal-box{
+      margin-top:35px;
+      padding:22px;
+      border-radius:20px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .paypal-box span{
+      display:block;
+      color:rgba(255,255,255,0.6);
+      margin-bottom:12px;
+      font-size:0.95rem;
+    }
+
+    .paypal-email{
+      font-size:1.4rem;
+      font-weight:700;
+      color:#7fd1ff;
+      word-break:break-word;
+    }
+
+    .buttons{
+      margin-top:35px;
+      display:flex;
+      justify-content:center;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:15px 28px;
+      border-radius:16px;
+      text-decoration:none;
+      color:white;
+      font-weight:700;
+      transition:0.3s ease;
+    }
+
+    .primary{
+      background:linear-gradient(90deg,#00a2ff,#6d28ff);
+      box-shadow:0 10px 30px rgba(0,162,255,0.35);
+    }
+
+    .secondary{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .btn:hover{
+      transform:translateY(-4px);
+    }
+
+    @media(max-width:700px){
+      .card{
+        padding:40px 25px;
+      }
+
+      h1{
+        font-size:2.3rem;
+      }
+
+      .goal h2{
+        font-size:2.5rem;
+      }
+
+      .paypal-email{
+        font-size:1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <div class="paypal-logo">
+      PayPal
+    </div>
+
+    <h1>Support My Goal</h1>
+
+    <p>
+      Every contribution helps me get closer to buying a yozma.
+      Thank you for supporting the journey.
+    </p>
+
+    <div class="goal">
+      <span>Current Goal</span>
+      <h2>$1,139.05</h2>
+      <p>Current Progress: $28 • 2.46%</p>
+    </div>
+
+    <div class="paypal-box">
+      <span>Send support to:</span>
+
+      <div class="paypal-email">
+        kenzoheideman@outlook.com
+      </div>
+    </div>
+
+    <div class="buttons">
+      <a href="index.html" class="btn secondary">Back</a>
+
+      <a href="https://paypal.me/kenzogrinds" class="btn primary">
+        Open PayPal
+      </a>
+    </div>
+
+  </div>
+
+</body>
+</html>
