@@ -243,6 +243,7 @@
   </div>
 
 <!-- WORLD CHAT -->
+<!-- WORLDWIDE CHAT -->
 <style>
 #chatToggle{
   position:fixed;
@@ -389,6 +390,14 @@
   font-weight:700;
   cursor:pointer;
 }
+
+@media(max-width:500px){
+  #worldChat{
+    width:95%;
+    right:2.5%;
+    bottom:90px;
+  }
+}
 </style>
 
 <button id="chatToggle">💬</button>
@@ -396,7 +405,7 @@
 <div id="worldChat">
   <div class="chat-top">
     <div>🌎 Worldwide Chat</div>
-    <span id="onlineCount">LIVE</span>
+    <span>LIVE</span>
   </div>
 
   <div id="messages"></div>
@@ -417,6 +426,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import {
   getDatabase,
   ref,
@@ -427,13 +437,14 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "PUT_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "123456",
-  appId: "123456"
+  apiKey: "AIzaSyAuoYSA7Di1Dpz9-Ke2xcmhw7w8Hr5lny8",
+  authDomain: "saving-for-a-yozma.firebaseapp.com",
+  databaseURL: "https://saving-for-a-yozma-default-rtdb.firebaseio.com",
+  projectId: "saving-for-a-yozma",
+  storageBucket: "saving-for-a-yozma.firebasestorage.app",
+  messagingSenderId: "1043912888044",
+  appId: "1:1043912888044:web:c4b5440a12e52245385fc9",
+  measurementId: "G-MR1V1L87TG"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -454,9 +465,13 @@ if(username){
 document.getElementById("saveUsername").onclick = () => {
   const val = document.getElementById("usernameInput").value.trim();
 
-  if(val.length < 2) return;
+  if(val.length < 2){
+    alert("Username too short");
+    return;
+  }
 
   username = val;
+
   localStorage.setItem("chatUsername", val);
 
   document.getElementById("usernameModal").style.display = "none";
@@ -472,7 +487,9 @@ chatToggle.onclick = () => {
 sendBtn.onclick = sendMessage;
 
 messageInput.addEventListener("keypress", e => {
-  if(e.key === "Enter") sendMessage();
+  if(e.key === "Enter"){
+    sendMessage();
+  }
 });
 
 function sendMessage(){
@@ -481,15 +498,18 @@ function sendMessage(){
   if(!text || !username) return;
 
   push(ref(db, "messages"), {
-    username,
-    text,
+    username: username,
+    text: text,
     time: Date.now()
   });
 
   messageInput.value = "";
 }
 
-const messagesQuery = query(ref(db, "messages"), limitToLast(50));
+const messagesQuery = query(
+  ref(db, "messages"),
+  limitToLast(50)
+);
 
 onChildAdded(messagesQuery, snapshot => {
   const msg = snapshot.val();
